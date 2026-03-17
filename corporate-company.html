@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grup Şirketleri - CMS Jant Sanayi</title>
+    <meta name="description" content="CMS Jant ve Makine Sanayi A.Ş. — 40 yılı aşkın tecrübesiyle dünya standartlarında alüminyum jant üretimi.">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 + Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        :root { --gold-primary:#D4AF37; --gold-light:#F3E5AB; --dark-bg:#0A0A0A; --dark-surface:rgba(18,18,18,0.85); --text-main:#E0E0E0; --text-muted:#9E9E9E; --glass-border:rgba(255,255,255,0.08); --font-heading:'Outfit',sans-serif; --font-body:'Inter',sans-serif; }
+        body{font-family:var(--font-body);background:var(--dark-bg);color:var(--text-main);margin:0;-webkit-font-smoothing:antialiased;}
+        h1,h2,h3,h4,h5,h6,.navbar-brand,.nav-link{font-family:var(--font-heading);}
+
+        /* NAVBAR */
+        .navbar{height:90px;transition:all .4s cubic-bezier(.25,.8,.25,1);z-index:9999;border-bottom:1px solid var(--glass-border);position:fixed;top:0;left:0;width:100%;}
+        .header-solid{background:rgba(10,10,10,.85)!important;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 4px 30px rgba(0,0,0,.4);}
+        .navbar.scrolled{background:rgba(10,10,10,.95)!important;backdrop-filter:blur(20px);height:80px;box-shadow:0 10px 40px rgba(0,0,0,.5);}
+        .nav-link{color:rgba(255,255,255,.9)!important;font-weight:500;font-size:15px;letter-spacing:.5px;text-transform:uppercase;padding:10px 20px!important;transition:all .3s;position:relative;}
+        .nav-link::after{content:'';position:absolute;width:0;height:2px;bottom:5px;left:50%;background:var(--gold-primary);transition:all .3s;transform:translateX(-50%);border-radius:2px;box-shadow:0 0 8px var(--gold-primary);}
+        .nav-link:hover::after,.nav-item:hover .nav-link::after{width:calc(100% - 40px);}
+        .nav-link:hover,.nav-item:hover .nav-link{color:var(--gold-primary)!important;}
+
+        /* MEGA MENU */
+        .mega-menu{display:block;visibility:hidden;opacity:0;position:absolute;top:100%;left:0;width:100vw;margin-left:calc(-50vw + 50%);background:var(--dark-surface);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-top:2px solid var(--gold-primary);border-bottom:1px solid var(--glass-border);padding:3rem 0;z-index:998;box-shadow:0 20px 50px rgba(0,0,0,.7);transform:translateY(15px);transition:all .4s cubic-bezier(.16,1,.3,1);}
+        .dropdown:hover>.mega-menu{visibility:visible;opacity:1;transform:translateY(0);}
+        .mega-menu h6 a{color:var(--gold-primary)!important;font-weight:600;font-size:16px;letter-spacing:1px;text-transform:uppercase;display:inline-block;text-decoration:none;transition:text-shadow .3s;}
+        .mega-menu h6 a:hover{color:var(--gold-light)!important;text-shadow:0 0 10px rgba(212,175,55,.5);}
+        .mega-menu ul li a{color:var(--text-muted)!important;text-decoration:none;display:block;padding:10px 15px;font-size:14px;border-radius:8px;transition:all .3s;position:relative;overflow:hidden;}
+        .mega-menu ul li a::before{content:'';position:absolute;left:0;top:0;height:100%;width:3px;background:var(--gold-primary);transform:scaleY(0);transition:transform .3s;border-radius:0 4px 4px 0;}
+        .mega-menu ul li a:hover{color:#fff!important;background:rgba(255,255,255,.05);padding-left:22px;}
+        .mega-menu ul li a:hover::before{transform:scaleY(1);}
+        .mega-menu .border-end{border-color:var(--glass-border)!important;}
+        .dropdown-menu.mega-menu{margin-top:-1px;}
+
+        /* TOP ACTIONS */
+        .top-actions{display:flex;align-items:center;gap:20px;margin-left:20px;}
+        .lang-switch{font-size:13px;font-weight:600;letter-spacing:1px;color:#fff;cursor:pointer;transition:color .3s;}
+        .lang-switch:hover{color:var(--gold-primary);}
+        .lang-switch.active{color:var(--gold-primary);}
+        .search-btn{background:none;border:none;color:#fff;font-size:18px;transition:all .3s;cursor:pointer;}
+        .search-btn:hover{color:var(--gold-primary);transform:scale(1.1);}
+
+        /* SEARCH OVERLAY */
+        .search-overlay{position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,.92);backdrop-filter:blur(20px);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:all .4s cubic-bezier(.25,.8,.25,1);}
+        .search-overlay.active{opacity:1;visibility:visible;}
+        .search-overlay .search-close{position:absolute;top:30px;right:40px;background:none;border:none;color:#fff;font-size:32px;cursor:pointer;transition:all .3s;}
+        .search-overlay .search-close:hover{color:var(--gold-primary);transform:rotate(90deg);}
+        .search-overlay .search-container{width:90%;max-width:700px;text-align:center;}
+        .search-overlay h3{font-family:var(--font-heading);color:#fff;font-weight:700;font-size:28px;margin-bottom:30px;}
+        .search-overlay .search-input-wrap{position:relative;display:flex;border:2px solid rgba(255,255,255,.15);border-radius:60px;overflow:hidden;transition:border-color .3s;}
+        .search-overlay .search-input-wrap:focus-within{border-color:var(--gold-primary);}
+        .search-overlay input[type="text"]{flex:1;padding:18px 28px;font-size:18px;background:transparent;border:none;color:#fff;font-family:var(--font-body);outline:none;}
+        .search-overlay input[type="text"]::placeholder{color:#666;}
+        .search-overlay .search-submit{background:var(--gold-primary);border:none;color:#000;padding:0 28px;font-size:20px;cursor:pointer;transition:background .3s;}
+        .search-overlay .search-submit:hover{background:#e6c547;}
+
+        /* MAIN */
+        main{padding-top:110px;min-height:calc(100vh - 350px);background:linear-gradient(180deg,var(--dark-bg) 0%,#111 100%);}
+
+        /* PAGE HERO */
+        .page-hero{background:linear-gradient(135deg,rgba(212,175,55,.08),transparent);border-bottom:1px solid rgba(255,255,255,.05);padding:60px 0 40px;}
+        .page-hero h1{font-family:'Outfit',sans-serif;background:linear-gradient(135deg,#D4AF37,#F3E5AB);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:800;}
+
+        /* CONTENT CARDS */
+        .info-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:32px;transition:all .4s ease;}
+        .info-card:hover{border-color:rgba(212,175,55,.3);transform:translateY(-5px);box-shadow:0 15px 30px rgba(0,0,0,.3);}
+        .info-card h3{color:#D4AF37;font-family:'Outfit',sans-serif;}
+        .info-card p,.info-card li{color:#bbb;font-size:15px;line-height:1.8;}
+        .info-card .card-icon{font-size:32px;color:var(--gold-primary);margin-bottom:16px;}
+
+        /* FOOTER */
+        footer{background:#050505;color:var(--text-muted);padding:80px 0 30px;border-top:1px solid var(--glass-border);position:relative;overflow:hidden;}
+        footer::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:60%;height:1px;background:radial-gradient(circle,var(--gold-primary) 0%,transparent 100%);opacity:.5;}
+        footer h5{color:var(--text-main);font-weight:700;font-size:20px;letter-spacing:1px;margin-bottom:1.5rem;}
+        footer p,footer li{font-size:14px;line-height:1.8;color:#AAA;}
+        footer a{color:#AAA;text-decoration:none;transition:all .3s;}
+        footer a:hover{color:var(--gold-primary);}
+        .social-icons i{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.05);color:var(--text-main);font-size:18px;transition:all .3s cubic-bezier(.175,.885,.32,1.275);border:1px solid var(--glass-border);margin-right:10px;}
+        .social-icons i:hover{transform:translateY(-5px);background:var(--gold-primary);color:#000;border-color:var(--gold-primary);box-shadow:0 10px 20px rgba(212,175,55,.3);cursor:pointer;}
+        .contact-info p{display:flex;align-items:center;margin-bottom:12px;}
+        .contact-info i{color:var(--gold-primary);font-size:18px;margin-right:12px;width:24px;text-align:center;}
+        .bottom-line{border-top:1px solid rgba(255,255,255,.05);padding-top:25px;margin-top:60px;font-size:13px;color:#777;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+        .bottom-line a{color:#777;}
+        .bottom-line a:hover{color:var(--gold-primary);}
+        .text-gold{color:var(--gold-primary)!important;}
+
+        @media(max-width:991px){
+            .mega-menu{position:static!important;width:100%!important;margin-left:0!important;box-shadow:none!important;border-top:1px solid var(--glass-border);transform:none!important;}
+            .dropdown:hover>.mega-menu{visibility:visible;opacity:1;}
+            .top-actions{margin-left:0;justify-content:center;}
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<header class="header-solid navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">
+            <img src="assets/logo/cms-logo.svg" alt="CMS Jant" height="52"
+                 style="filter:drop-shadow(0 4px 6px rgba(0,0,0,.5));transition:transform .3s;"
+                 onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu">
+            <span class="navbar-toggler-icon" style="filter:invert(70%) sepia(50%) saturate(600%) hue-rotate(5deg) brightness(100%) contrast(100%);"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainMenu">
+            <ul class="navbar-nav ms-auto align-items-center gap-2 text-uppercase">
+                <li class="nav-item dropdown position-static">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-i18n="nav.kurumsal">KURUMSAL</a>
+                    <div class="dropdown-menu mega-menu">
+                        <div class="container"><div class="row text-white">
+                            <div class="col-md-4 border-end">
+                                <h6><a href="corporate-company.html" data-i18n="mega.grup">GRUP ŞİRKETLERİ</a></h6>
+                                <ul class="list-unstyled">
+                                    <li><a href="corporate-company.html" data-i18n="mega.cms1">CMS Jant ve Makina San. A.Ş.</a></li>
+                                    <li><a href="corporate-company.html" data-i18n="mega.cms2">CMS Jant Sanayi A.Ş.</a></li>
+                                    <li><a href="corporate-company.html" data-i18n="mega.cms3">CMS GmbH</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4 border-end">
+                                <h6><a href="corporate-social-responsibility.html" data-i18n="mega.sosyal">SOSYAL SORUMLULUK</a></h6>
+                                <ul class="list-unstyled">
+                                    <li><a href="corporate-social-responsibility.html" data-i18n="mega.politika">Politikamız</a></li>
+                                    <li><a href="corporate-social-responsibility.html" data-i18n="mega.saglik">Sağlık</a></li>
+                                    <li><a href="corporate-social-responsibility.html" data-i18n="mega.cevre">Çevre</a></li>
+                                    <li><a href="corporate-social-responsibility.html" data-i18n="mega.egitim">Eğitim</a></li>
+                                    <li><a href="corporate-social-responsibility.html" data-i18n="mega.kultur">Kültür Sanat</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4">
+                                <h6><a href="corporate-policies.html" data-i18n="mega.politikalar">POLİTİKALARIMIZ</a></h6>
+                                <ul class="list-unstyled">
+                                    <li><a href="corporate-policies.html" data-i18n="mega.bilgi">Bilgi Güvenliği</a></li>
+                                    <li><a href="corporate-policies.html" data-i18n="mega.etik">İş Etiği</a></li>
+                                    <li><a href="corporate-policies.html" data-i18n="mega.kvkk">Kişisel Verilerin Korunması</a></li>
+                                    <li><a href="corporate-policies.html" data-i18n="mega.cesitlilik">Çeşitlilik ve Kapsayıcılık</a></li>
+                                </ul>
+                            </div>
+                        </div></div>
+                    </div>
+                </li>
+                <li class="nav-item dropdown position-static">
+                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" data-i18n="nav.urunler">ÜRÜNLER</a>
+                    <div class="dropdown-menu mega-menu">
+                        <div class="container"><div class="row text-white">
+                            <div class="col-md-4 border-end">
+                                <h6><a href="product-groups.html" data-i18n="mega.urungruplarimiz">ÜRÜN GRUPLARIMIZ</a></h6>
+                                <ul class="list-unstyled">
+                                    <li><a href="product-groups.html" data-i18n="mega.binek">Binek Araç Jantları</a></li>
+                                    <li><a href="product-groups.html" data-i18n="mega.ticari">Ticari Araç Jantları</a></li>
+                                    <li><a href="product-groups.html" data-i18n="mega.elektrik">Elektrikli Araç Jantları</a></li>
+                                    <li><a href="product-groups.html" data-i18n="mega.ozel">Özel Üretim Jantlar</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4 border-end">
+                                <h6><a href="product-technology.html" data-i18n="mega.teknoloji">TEKNOLOJİLER</a></h6>
+                                <ul class="list-unstyled">
+                                    <li><a href="product-technology.html" data-i18n="mega.dokum">Döküm Teknolojileri</a></li>
+                                    <li><a href="product-technology.html" data-i18n="mega.yuzey">Yüzey Kaplama</a></li>
+                                    <li><a href="product-technology.html" data-i18n="mega.hafiflik">Hafiflik ve Dayanıklılık</a></li>
+                                    <li><a href="product-technology.html" data-i18n="mega.kalitekontrol">Kalite Kontrol</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-4">
+                                <h6><a href="product-brand-and-referance.html" data-i18n="mega.markalarimiz">MARKALARIMIZ</a></h6>
+                                <ul class="list-unstyled">
+                                    <li><a href="product-brand-and-referance.html" data-i18n="mega.original">CMS Original Serisi</a></li>
+                                    <li><a href="product-brand-and-referance.html" data-i18n="mega.premium">CMS Premium Line</a></li>
+                                    <li><a href="product-brand-and-referance.html" data-i18n="mega.oem">OEM İşbirlikleri</a></li>
+                                    <li><a href="product-brand-and-referance.html" data-i18n="mega.katalog">Ürün Kataloğu</a></li>
+                                </ul>
+                            </div>
+                        </div></div>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="arge.html" data-i18n="nav.arge">AR-GE</a></li>
+                <li class="nav-item"><a class="nav-link" href="kalite.html" data-i18n="nav.kalite">KALİTE</a></li>
+                <li class="nav-item"><a class="nav-link" href="sustainability.html" data-i18n="nav.surdurulebilirlik">SÜRDÜRÜLEBİLİRLİK</a></li>
+                <li class="nav-item"><a class="nav-link" href="communication.html" data-i18n="nav.iletisim">İLETİŞİM</a></li>
+            </ul>
+            <div class="top-actions ms-lg-4 mt-3 mt-lg-0">
+                <div>
+                    <span class="lang-switch active">TR</span>
+                    <span class="text-muted mx-1">|</span>
+                    <span class="lang-switch">EN</span>
+                </div>
+                <button class="search-btn" aria-label="Arama"><i class="bi bi-search"></i></button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="searchOverlay">
+    <button class="search-close" id="searchClose"><i class="bi bi-x-lg"></i></button>
+    <div class="search-container">
+        <h3 data-i18n="search.title">Ne Aramıştınız?</h3>
+        <div class="search-input-wrap">
+            <input type="text" id="searchInput" placeholder="Jant modeli, ürün grubu veya sayfa ara..." data-i18n-ph="search.placeholder" autocomplete="off">
+            <button class="search-submit" id="searchSubmit"><i class="bi bi-search"></i></button>
+        </div>
+    </div>
+</div>
+
+<main>
+    <div class="page-hero">
+        <div class="container">
+            <h1 class="display-5 mb-3" data-i18n="company.title">CMS JANT VE MAK. SAN. A.Ş.</h1>
+            <p class="lead" style="color:#aaa;" data-i18n="company.desc">CMS Jant ve Makine Sanayi A.Ş., 40 yılı aşkın tecrübesiyle otomotiv sektörüne dünya standartlarında alüminyum jant üretimi gerçekleştiren CMS Grubu şirketlerinden biridir.</p>
+        </div>
+    </div>
+
+    <div class="container py-5">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="info-card h-100">
+                    <div class="card-icon"><i class="bi bi-bullseye"></i></div>
+                    <h3 data-i18n="company.misyon">Misyonumuz</h3>
+                    <p data-i18n="company.misyon.desc">Yenilikçi üretim teknolojileri ile kaliteli ve güvenilir jant üretimi gerçekleştirerek sektörde sürdürülebilir başarı elde etmek.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="info-card h-100">
+                    <div class="card-icon"><i class="bi bi-eye"></i></div>
+                    <h3 data-i18n="company.vizyon">Vizyonumuz</h3>
+                    <p data-i18n="company.vizyon.desc">Global pazarda lider ve güvenilir bir otomotiv tedarikçisi olmak.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mt-2">
+            <div class="col-12">
+                <div class="info-card">
+                    <div class="card-icon"><i class="bi bi-gear-wide-connected"></i></div>
+                    <h3 data-i18n="company.faaliyet">Faaliyet Alanlarımız</h3>
+                    <ul>
+                        <li data-i18n="company.f1">OEM jant üretimi</li>
+                        <li data-i18n="company.f2">Yeni nesil döküm teknolojileri</li>
+                        <li data-i18n="company.f3">Gelişmiş kalite kontrol ve laboratuvar süreçleri</li>
+                        <li data-i18n="company.f4">Yüksek dayanımlı ve hafif jant tasarımı</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-5 mb-md-0">
+                <a href="index.html" class="d-inline-block mb-4"><img src="assets/logo/cms-logo.svg" alt="CMS Jant" height="45"></a>
+                <p class="mb-4 pe-lg-4" data-i18n="footer.hakkinda">Alanında lider jant üretim teknolojileri ile 40 yılı aşkın tecrübeyle otomotiv sektöründe kalite standartlarını belirliyoruz.</p>
+                <div class="social-icons">
+                    <a href="https://facebook.com" target="_blank" rel="noopener"><i class="bi bi-facebook"></i></a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener"><i class="bi bi-instagram"></i></a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener"><i class="bi bi-linkedin"></i></a>
+                    <a href="https://youtube.com" target="_blank" rel="noopener"><i class="bi bi-youtube"></i></a>
+                </div>
+            </div>
+            <div class="col-md-4 mb-5 mb-md-0 contact-info">
+                <h5 class="text-gold" data-i18n="footer.iletisim">İLETİŞİM</h5>
+                <p><i class="bi bi-geo-alt"></i> <span data-i18n="footer.adres">Kemalpaşa OSB Mah. 50. Yıl Cad. No: 12<br>Kemalpaşa / İzmir, Türkiye</span></p>
+                <p><i class="bi bi-telephone"></i> <span>+90 (232) 877 12 34</span></p>
+                <p><i class="bi bi-envelope"></i> <span>info@cms.com.tr</span></p>
+            </div>
+            <div class="col-md-4">
+                <h5 class="text-gold" data-i18n="footer.hizli">HIZLI BAĞLANTILAR</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="corporate-company.html" data-i18n="footer.hakkimizda">Hakkımızda</a></li>
+                    <li class="mb-2"><a href="product-groups.html" data-i18n="footer.urunlerimiz">Ürünlerimiz</a></li>
+                    <li class="mb-2"><a href="kalite.html" data-i18n="footer.kalite">Kalite Yönetimi</a></li>
+                    <li class="mb-2"><a href="sustainability.html" data-i18n="footer.surd">Sürdürülebilirlik</a></li>
+                    <li class="mb-2"><a href="communication.html" data-i18n="footer.bize">Bize Ulaşın</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="bottom-line">
+            <div>© 2026 CMS JANT SANAYİ | <span data-i18n="footer.rights">Tüm Hakları Saklıdır</span></div>
+            <div class="d-flex gap-3">
+                <a href="corporate-policies.html" data-i18n="footer.gizlilik">Gizlilik Politikası</a>
+                <a href="corporate-policies.html" data-i18n="footer.cerez">Çerez Politikası</a>
+                <a href="corporate-policies.html" data-i18n="footer.kvkk">KVKK Aydınlatma Metni</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/i18n.js"></script>
+<script>
+    // Scroll effect
+    window.addEventListener('scroll', function(){
+        const nav=document.querySelector('.navbar');
+        nav.classList.toggle('scrolled', window.scrollY>50);
+    });
+    // Search
+    const searchBtn=document.querySelector('.search-btn'),searchOverlay=document.getElementById('searchOverlay'),searchClose=document.getElementById('searchClose'),searchInput=document.getElementById('searchInput');
+    if(searchBtn&&searchOverlay){
+        searchBtn.addEventListener('click',e=>{e.preventDefault();searchOverlay.classList.add('active');setTimeout(()=>searchInput.focus(),300);});
+        searchClose.addEventListener('click',()=>{searchOverlay.classList.remove('active');searchInput.value='';});
+        searchOverlay.addEventListener('click',e=>{if(e.target===searchOverlay){searchOverlay.classList.remove('active');searchInput.value='';}});
+        document.addEventListener('keydown',e=>{if(e.key==='Escape'&&searchOverlay.classList.contains('active')){searchOverlay.classList.remove('active');searchInput.value='';}});
+        const searchPages=[
+            {title:'Ana Sayfa',titleEn:'Home Page',url:'index.html'},
+            {title:'Hakkımızda',titleEn:'About Us',url:'corporate-company.html'},
+            {title:'Sosyal Sorumluluk',titleEn:'Social Responsibility',url:'corporate-social-responsibility.html'},
+            {title:'Politikalar',titleEn:'Policies',url:'corporate-policies.html'},
+            {title:'Ürün Grupları',titleEn:'Product Groups',url:'product-groups.html'},
+            {title:'Ürün Teknolojileri',titleEn:'Product Technologies',url:'product-technology.html'},
+            {title:'Marka ve Referanslar',titleEn:'Brand and References',url:'product-brand-and-referance.html'},
+            {title:'AR-GE Merkezi',titleEn:'R&D Center',url:'arge.html'},
+            {title:'Kalite',titleEn:'Quality',url:'kalite.html'},
+            {title:'Sürdürülebilirlik',titleEn:'Sustainability',url:'sustainability.html'},
+            {title:'İletişim',titleEn:'Communication',url:'communication.html'}
+        ];
+        document.getElementById('searchSubmit').addEventListener('click',doSearch);
+        searchInput.addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
+        function doSearch(){const q=searchInput.value.trim().toLowerCase();if(!q)return;const found=searchPages.find(p=>p.title.toLowerCase().includes(q)||p.titleEn.toLowerCase().includes(q));if(found)window.location.href=found.url;}
+    }
+</script>
+</body>
+</html>
